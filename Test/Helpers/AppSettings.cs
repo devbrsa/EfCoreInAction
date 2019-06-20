@@ -11,14 +11,13 @@ namespace test.Helpers
     {
         public const string ConnectionStringName = "DefaultConnection";
 
-
         public static IConfigurationRoot GetConfiguration()
         {
             var testDir = Path.Combine(TestFileHelpers.GetSolutionDirectory(), "test");
             var builder = new ConfigurationBuilder()
                 .SetBasePath(testDir)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)               
-                .AddEnvironmentVariables();
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false);
+
             return builder.Build();
         }
 
