@@ -12,8 +12,8 @@ namespace DataLayer.EfCode.Configurations
         public void Configure
             (EntityTypeBuilder<Book> entity)
         {
-            entity.Property(p => p.PublishedOn)//#A
-                .HasColumnType("date");        
+            entity.Property(p => p.PublishedOn) //#A
+                .HasColumnType("date");
 
             entity.Property(p => p.Price) //#B
                 .HasColumnType("decimal(9,2)");
@@ -40,6 +40,7 @@ namespace DataLayer.EfCode.Configurations
                 .HasForeignKey(p => p.BookId); //#B
         }
     }
+
     /*Type/Size setting**********************************************
     #A The convention-based mapping for .NET DateTime is SQL datetime2. This command changes the SQL column type to date, which only holds the date, not time
     #B I set a smaller precision and scale of (9,2) for the price instead of the default (18,2)
