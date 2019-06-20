@@ -19,7 +19,6 @@ namespace EfCoreInAction
 {
     public class Startup
     {
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -39,7 +38,7 @@ namespace EfCoreInAction
             services.AddSingleton(new AppInformation(gitBranchName));
 
             var connection = Configuration.GetConnectionString("DefaultConnection");
-            if (Configuration["ENVIRONMENT"]== "Development")
+            if (Configuration["ENVIRONMENT"] == "Development")
             {
                 //if running in development mode then we alter the connection to have the branch name in it
                 connection = connection.FormDatabaseConnection(gitBranchName);
@@ -49,7 +48,7 @@ namespace EfCoreInAction
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, 
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,
             ILoggerFactory loggerFactory, IHttpContextAccessor httpContextAccessor)
         {
             //Remove the standard loggers because they slow the applictaion down
@@ -59,7 +58,6 @@ namespace EfCoreInAction
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
             }
             else
             {
