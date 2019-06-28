@@ -16,7 +16,7 @@ namespace DataLayer.EfCode
         public DbSet<PriceOffer> PriceOffers { get; set; }  //#A
         public DbSet<Order> Orders { get; set; }            //#A
         public DbSet<OrderInfo> OrderInfos { get; set; }            //#A
-        //public DbSet<BookSummary> BookSummaries { get; set; }
+        public DbSet<BookSummary> BookSummaries { get; set; }
 
         public EfCoreContext(
             DbContextOptions<EfCoreContext> options)
@@ -34,15 +34,15 @@ namespace DataLayer.EfCode
             modelBuilder.Entity<OrderInfo>().OwnsOne(p => p.DeliveryAddress);
             modelBuilder.Entity<OrderInfo>().OwnsOne(p => p.HomeAddress).ToTable("HomeAddress");
 
-            //modelBuilder.Entity<BookSummary>()
-            //    .HasOne(e => e.Details)
-            //    .WithOne()
-            //    .HasForeignKey<BookDetail>(e => e.BookDetailId);
+            modelBuilder.Entity<BookSummary>()
+                .HasOne(e => e.Details)
+                .WithOne()
+                .HasForeignKey<BookDetail>(e => e.BookDetailId);
 
-            //modelBuilder.Entity<BookSummary>()
-            //    .ToTable("BookSummary");
-            //modelBuilder.Entity<BookDetail>()
-            //    .ToTable("BookSummary");
+            modelBuilder.Entity<BookSummary>()
+                .ToTable("BookSummary");
+            modelBuilder.Entity<BookDetail>()
+                .ToTable("BookSummary");
         }
 
         /*****************************************************************
