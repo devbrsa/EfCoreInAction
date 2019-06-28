@@ -2,9 +2,9 @@
 // EfCoreExample - Example code to go with book
 // Filename: HttpRequestLog.cs
 // Date Created: 2016/09/11
-// 
+//
 // Under the MIT License (MIT)
-// 
+//
 // Written by Jon P Smith : GitHub JonPSmith, www.thereformedprogrammer.net
 // =====================================================
 
@@ -21,9 +21,9 @@ using Microsoft.Extensions.Logging;
 namespace ServiceLayer.Logger
 {
     /// <summary>
-    /// This class handles the storing/retrieval of logs for each Http request, as defined by 
-    /// ASP.NET Core's TraceIdentifier. 
-    /// It uses a static ConcurrentDictionary to hold the logs. 
+    /// This class handles the storing/retrieval of logs for each Http request, as defined by
+    /// ASP.NET Core's TraceIdentifier.
+    /// It uses a static ConcurrentDictionary to hold the logs.
     /// NOTE: THIS WILL NOT WORK WITH SCALE OUT, i.e. it will not work if multiple instances of the web app are running
     /// </summary>
     public class HttpRequestLog
@@ -57,8 +57,7 @@ namespace ServiceLayer.Logger
 
         public static void AddLog(string traceIdentifier, LogLevel logLevel, EventId eventId, string eventString)
         {
-            var thisSessionLog = AllHttpRequestLogs.GetOrAdd(traceIdentifier,
-                x => new HttpRequestLog(traceIdentifier));
+            HttpRequestLog thisSessionLog = AllHttpRequestLogs.GetOrAdd(traceIdentifier, x => new HttpRequestLog(traceIdentifier));
 
             thisSessionLog._requestLogs.Add(new LogParts(logLevel, eventId, eventString));
             thisSessionLog.LastAccessed = DateTime.UtcNow;
@@ -77,7 +76,7 @@ namespace ServiceLayer.Logger
             //No log so make up one to say what has happened.
             result = new HttpRequestLog(traceIdentifier);
             var oldest = AllHttpRequestLogs.Values.OrderBy(x => x.LastAccessed).FirstOrDefault();
-            result._requestLogs.Add(new LogParts(LogLevel.Warning, new EventId(1, "EfCoreInAction"), 
+            result._requestLogs.Add(new LogParts(LogLevel.Warning, new EventId(1, "EfCoreInAction"),
                 $"Could not find the log you asked for. I have {AllHttpRequestLogs.Keys.Count} logs" +
                 (oldest == null ? "." : $" the oldest is {oldest.LastAccessed:s}")));
 

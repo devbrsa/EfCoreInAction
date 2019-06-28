@@ -4,14 +4,16 @@ using DataLayer.EfCode;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(EfCoreContext))]
-    partial class EfCoreContextModelSnapshot : ModelSnapshot
+    [Migration("20190628092535_Chapter07.OwnedTypes")]
+    partial class Chapter07OwnedTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -253,28 +255,6 @@ namespace DataLayer.Migrations
 
                             b1.HasOne("DataLayer.EfClasses.OrderInfo")
                                 .WithOne("DeliveryAddress")
-                                .HasForeignKey("DataLayer.EfClasses.Address", "OrderInfoId")
-                                .OnDelete(DeleteBehavior.Cascade);
-                        });
-
-                    b.OwnsOne("DataLayer.EfClasses.Address", "HomeAddress", b1 =>
-                        {
-                            b1.Property<int>("OrderInfoId");
-
-                            b1.Property<string>("City");
-
-                            b1.Property<string>("CountryCodeIso2");
-
-                            b1.Property<string>("NumberAndStreet");
-
-                            b1.Property<string>("ZipPostCode");
-
-                            b1.HasKey("OrderInfoId");
-
-                            b1.ToTable("HomeAddress");
-
-                            b1.HasOne("DataLayer.EfClasses.OrderInfo")
-                                .WithOne("HomeAddress")
                                 .HasForeignKey("DataLayer.EfClasses.Address", "OrderInfoId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });

@@ -27,7 +27,6 @@ namespace EfCoreInAction.Logger
             return new MyLogger(_httpAccessor);
         }
 
-
         public void Dispose()
         {
         }
@@ -39,7 +38,6 @@ namespace EfCoreInAction.Logger
             public MyLogger(Func<IHttpContextAccessor> httpAccessor)
             {
                 _httpAccessor = httpAccessor;
-                
             }
 
             public bool IsEnabled(LogLevel logLevel)
