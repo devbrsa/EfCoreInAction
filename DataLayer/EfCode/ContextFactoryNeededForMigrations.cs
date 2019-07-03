@@ -7,9 +7,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace DataLayer.EfCode
 {
-
     /// <summary>
-    /// This class is needed to allow Add-Migrations command to be run. 
+    /// This class is needed to allow Add-Migrations command to be run.
     /// It is not a good implmentation as it has to have a constant connection sting in it
     /// but it is Ok on a local machine, which is where you want to run the command
     /// see https://docs.microsoft.com/en-us/ef/core/miscellaneous/configuring-dbcontext#using-idesigntimedbcontextfactorytcontext
@@ -17,7 +16,7 @@ namespace DataLayer.EfCode
     public class ContextFactoryNeededForMigrations : IDesignTimeDbContextFactory<EfCoreContext>
     {
         private const string ConnectionString =
-            "Server=(localdb)\\mssqllocaldb;Database=EfCoreInActionDb;Trusted_Connection=True;MultipleActiveResultSets=true";
+            "Server=(localdb)\\mssqllocaldb;Database=EfCoreInActionDb.Chapter08;Trusted_Connection=True;MultipleActiveResultSets=true";
 
         public EfCoreContext CreateDbContext(string[] args)
         {

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using DataLayer.EfClasses;
 using DataLayer.EfCode;
 using EfCoreInAction.Helpers;
 using Microsoft.AspNetCore.Mvc;
@@ -16,34 +18,55 @@ namespace EfCoreInAction.Controllers
         private readonly EfCoreContext _context;
 
         public HomeController(EfCoreContext context)
-        {                                           
-            _context = context;                     
-        }                                           
+        {
+            _context = context;
+        }
 
         public async Task<IActionResult> Index  //#A
-            (SortFilterPageOptions options)         
+            (SortFilterPageOptions options)
         {
-            var listService =                       
+            //_context.ConcurrencyBooks.Add(new ConcurrencyBook()
+            //{
+            //    Title = "Bruno Arruda"
+            //});
+
+            //try
+            //{
+            //    var concurrencyBook = _context.ConcurrencyBooks.First(x => x.ConcurrencyBookId == 1);
+
+            //    concurrencyBook.Title = "Arruda";
+
+            //    _context.SaveChanges();
+            //}
+            //catch (DbUpdateConcurrencyException ex)
+            //{
+            //    Debug.WriteLine(ex.Message);
+
+            //    throw;
+            //}
+
+            var listService =
                 new ListBooksService(_context);
 
-            var bookList = listService //#B       
+            var bookList = listService //#B
                 .SortFilterPage(options)
-                .ToList(); //#C   
+                .ToList(); //#C
 
             //Because of EF Core 2.0.0 bug https://github.com/aspnet/EntityFrameworkCore/issues/9570 I have dropped this back to sync
-            //var bookList = await listService //#B       
+            //var bookList = await listService //#B
             //    .SortFilterPage(options)
-            //    .ToListAsync(); //#C                   
+            //    .ToListAsync(); //#C
 
             SetupTraceInfo();           //REMOVE THIS FOR BOOK as it could be confusing
 
-            return View(new BookListCombinedDto  
-                (options, bookList));              
+            return View(new BookListCombinedDto
+                (options, bookList));
         }
+
         /*******************************************************
         #A I have to make the Index action method async, by using the async keyword and the returned type has to be wrapped in a generic task
         #B I have to await the result of the ToListAsync method, which is an async command
-        #C Because my SortFilterPage method returned IQueryable<T> I can change is to async simply by replacing the .ToList() by the .ToListAsync() method 
+        #C Because my SortFilterPage method returned IQueryable<T> I can change is to async simply by replacing the .ToList() by the .ToListAsync() method
         * *****************************************************/
 
         /// <summary>
@@ -66,14 +89,14 @@ namespace EfCoreInAction.Controllers
                 service.GetFilterDropDownValues(    //#E
                     options.FilterBy)));            //#E
         }
+
         /****************************************************
         #A This method is called by the URL Home/GetFilterSearchContent
         #B It also gets the sort, filter, page options from the URL
         #C We create the BookFilterDropdownService using the applications's DbContext provided by ASP.NET Core
         #D This converts normal .NET objects into JSON format to send back to the AJAX Get call
-        #E The GetFilterDropDownValues method calculates the right data needed for the chosen filter type 
+        #E The GetFilterDropDownValues method calculates the right data needed for the chosen filter type
          * **************************************************/
-
 
         public IActionResult About()
         {
